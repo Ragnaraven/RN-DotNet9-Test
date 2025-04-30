@@ -54,21 +54,9 @@ public class PokemonSpritesOther
 {
     [JsonPropertyName("official-artwork")]
     public PokemonOfficialArtwork OfficialArtwork { get; set; } = new();
-    
-    [JsonPropertyName("home")]
-    public PokemonHomeSprites Home { get; set; } = new();
 }
 
 public class PokemonOfficialArtwork
-{
-    [JsonPropertyName("front_default")]
-    public string FrontDefault { get; set; } = string.Empty;
-    
-    [JsonPropertyName("front_shiny")]
-    public string FrontShiny { get; set; } = string.Empty;
-}
-
-public class PokemonHomeSprites
 {
     [JsonPropertyName("front_default")]
     public string FrontDefault { get; set; } = string.Empty;
