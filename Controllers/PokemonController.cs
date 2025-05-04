@@ -31,15 +31,10 @@ public class PokemonController : ControllerBase
         try
         {
             var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon?limit={limit}&offset={offset}");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            var pokemonResponse = JsonSerializer.Deserialize<PokemonResponse>(content, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-            return Ok(pokemonResponse);
+            var data = await ControllerHelper.handleResponse<PokemonResponse>(response);
+            return Ok(data);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return StatusCode(500, "Error fetching pokemon");
         }
@@ -47,22 +42,17 @@ public class PokemonController : ControllerBase
 
     [HttpGet("{id}")]
     [ResponseCache(Duration = 3600, VaryByQueryKeys = new[] { "id" })]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PokemonResponse))]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Pokemon))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> GetPokemonById([FromRoute] int id)
     {
         try
         {
             var response = await _httpClient.GetAsync($"https://pokeapi.co/api/v2/pokemon/{id}");
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-            var pokemon = JsonSerializer.Deserialize<Pokemon>(content, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-            return Ok(pokemon);
+            var data = await ControllerHelper.handleResponse<Pokemon>(response);
+            return Ok(data);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return StatusCode(500, "Error fetching pokemon");
         }

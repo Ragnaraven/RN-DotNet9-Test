@@ -72,6 +72,8 @@ export interface PokemonTypeSlot {
     type: NamedApiResource;
 }
 
+
+
 export const pokemonApi = {
     getPokemon: async (limit: number = 20, offset: number = 0): Promise<PokemonResponse> => {
         const response = await fetch(`${backendUrl}/pokemon?limit=${limit}&offset=${offset}`);
@@ -80,6 +82,16 @@ export const pokemonApi = {
     
     getPokemonById: async (id: number): Promise<Pokemon> => {
         const response = await fetch(`${backendUrl}/pokemon/${id}`);
+        return response.json();
+    },
+
+    getAbilityByName: async (name: string): Promise<PokemonAbility> => {
+        const response = await fetch(`${backendUrl}/ability/${name}`);
+        return response.json();
+    },
+
+    getTypeByName: async (name: string): Promise<PokemonTypeSlot> => {
+        const response = await fetch(`${backendUrl}/type/${name}`);
         return response.json();
     }
 }

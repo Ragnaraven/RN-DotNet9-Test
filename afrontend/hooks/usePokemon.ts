@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { pokemonApi, PokemonResponse, Pokemon } from '../api/pokemonApi';
+import {pokemonApi, PokemonResponse, Pokemon, PokemonAbility, PokemonTypeSlot} from '../api/pokemonApi';
 
 export const usePokemonList = (limit: number = 20, offset: number = 0) => {
     const [data, setData] = useState<PokemonResponse | null>(null);
@@ -78,3 +78,80 @@ export const usePokemonDetail = (id: number) => {
 
     return { data, loading, error };
 }
+
+export const usePokemonType = (name: string) => {
+    const [data, setData] = useState<PokemonTypeSlot | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        async function fetchAbilities() {
+            try {
+                const response = await pokemonApi.getTypeByName(name);
+                if (isMounted) {
+                    setData(response);
+                    setLoading(false);
+                }
+            } catch (err) {
+                if (isMounted) {
+                    setError(err as string);
+                }
+            }
+            finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        fetchAbilities();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [name]);
+
+    return { data, loading, error };
+}
+
+
+export const usePokemonAbility = (name: string) => {
+    const [data, setData] = useState<PokemonAbility | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        async function fetchAbilities() {
+            try {
+                const response = await pokemonApi.getAbilityByName(name);
+                if (isMounted) {
+                    setData(response);
+                    setLoading(false);
+                }
+            } catch (err) {
+                if (isMounted) {
+                    setError(err as string);
+                }
+            }
+            finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        fetchAbilities();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [name]);
+
+    return { data, loading, error };
+}
+
+
